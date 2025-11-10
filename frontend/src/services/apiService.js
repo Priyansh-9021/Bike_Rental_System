@@ -1,8 +1,12 @@
 import axios from 'axios';
 
+// --- MODIFIED LINE ---
+// Replace 'localhost' with your server laptop's IP address
+const serverIp = '10.168.46.36'; // <-- ⚠️ CHANGE THIS TO YOUR IP
+
 // Create an Axios instance
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8080/api' // Your Java backend's address
+  baseURL: `http://${serverIp}:8080/api` // Use the IP address
 });
 
 // Add a request interceptor
@@ -21,5 +25,5 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Export the client as the default, as all your other files expect
+// Export the client as the default
 export default apiClient;

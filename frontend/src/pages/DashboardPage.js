@@ -7,6 +7,8 @@ import {
 import { useSnackbar } from 'notistack';
 import { useAuth } from '../context/AuthContext';
 
+const serverIp = '10.168.46.36'; 
+
 const DashboardPage = () => {
   const [bikes, setBikes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +30,7 @@ const DashboardPage = () => {
     try {
       await apiClient.post('/book', { bikeId });
       enqueueSnackbar('Bike booked successfully!', { variant: 'success' });
-      // No need to call fetchBikes() - WebSocket will handle it
+
     } catch (error) {
       const message = error.response?.data?.message || 'Booking failed';
       enqueueSnackbar(message, { variant: 'error' });
@@ -39,7 +41,6 @@ const DashboardPage = () => {
     try {
       await apiClient.post('/return', { bikeId });
       enqueueSnackbar('Bike returned successfully!', { variant: 'success' });
-      // No need to call fetchBikes() - WebSocket will handle it
     } catch (error)
     {
       const message = error.response?.data?.message || 'Return failed. Is this your bike?';
@@ -48,17 +49,14 @@ const DashboardPage = () => {
   };
 
   useEffect(() => {
-    // 1. Fetch the initial list
     fetchBikes(); 
 
-    // 2. Open WebSocket connection
-    const ws = new WebSocket('ws://localhost:8081');
+    const ws = new WebSocket(`ws://${serverIp}:8081`);
 
     ws.onopen = () => {
       console.log('WebSocket connected');
     };
 
-    // 3. This runs when the server broadcasts an update
     ws.onmessage = (event) => {
       const updatedBikes = JSON.parse(event.data);
       setBikes(updatedBikes); 
@@ -69,30 +67,22 @@ const DashboardPage = () => {
       console.log('WebSocket disconnected');
     };
 
-    // 4. This now shows the error in the snackbar
     ws.onerror = (err) => {
       console.error('WebSocket error:', err);
-      // Only show the error if the component isn't in the
-      // process of unmounting (which is what Strict Mode does)
       if (ws.readyState !== WebSocket.CLOSING && ws.readyState !== WebSocket.CLOSED) {
         enqueueSnackbar('Real-time connection failed.', { variant: 'error' });
       }
     };
 
-    // --- THIS IS THE FIX ---
-    // 5. Cleanup: Close the connection when the component unmounts
     return () => {
-      // By setting the handlers to null before closing,
-      // we prevent them from firing during the Strict Mode unmount/re-mount
       ws.onopen = null;
       ws.onclose = null;
       ws.onmessage = null;
       ws.onerror = null;
       ws.close();
     };
-  }, [fetchBikes, enqueueSnackbar]); // Added dependencies
+  }, [fetchBikes, enqueueSnackbar]);
 
-  // ... (rest of the file is the same) ...
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
