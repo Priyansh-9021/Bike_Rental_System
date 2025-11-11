@@ -11,7 +11,7 @@ public class HandlerUtils {
      * (running on localhost:3000) to make requests.
      */
     public static void setCorsHeaders(HttpExchange exchange) {
-        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "http://localhost:3002");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type,Authorization");
     }
