@@ -20,7 +20,6 @@ public class ListBikeHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
-            // --- (CORS OPTIONS check) ---
             if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 HandlerUtils.handleOptionsRequest(exchange);
                 return;
@@ -28,7 +27,6 @@ public class ListBikeHandler implements HttpHandler {
             HandlerUtils.setCorsHeaders(exchange);
 
             if ("POST".equals(exchange.getRequestMethod())) {
-                // --- (Authentication check) ---
                 String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
                 if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                     HandlerUtils.sendJsonResponse(exchange, 401, gson.toJson(Map.of("success", false, "message", "Missing token.")));
@@ -41,10 +39,8 @@ public class ListBikeHandler implements HttpHandler {
                 }
                 String username = claims.getSubject();
 
-                // --- UPDATED LOGIC ---
                 InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
 
-                // Use Map<String, Object> to handle mixed types (String, Double, Integer)
                 Map<String, Object> requestBody = gson.fromJson(isr, Map.class);
 
                 String model = (String) requestBody.get("model");
@@ -52,7 +48,6 @@ public class ListBikeHandler implements HttpHandler {
                 String contactNumber = (String) requestBody.get("contactNumber");
                 String photoUrl = (String) requestBody.get("photoUrl");
 
-                // GSON parses all numbers as Double, so we must cast correctly
                 int modelYear = ((Double) requestBody.get("modelYear")).intValue();
                 double rentRate = (Double) requestBody.get("rentRate");
 
@@ -70,7 +65,7 @@ public class ListBikeHandler implements HttpHandler {
                 exchange.sendResponseHeaders(405, -1);
             }
         } catch (Exception e) {
-            // Add a catch-all for parsing errors (e.g., if modelYear is not a number)
+
             HandlerUtils.sendJsonResponse(exchange, 500, gson.toJson(Map.of("success", false, "message", "Error processing request: " + e.getMessage())));
         } finally {
             exchange.close();

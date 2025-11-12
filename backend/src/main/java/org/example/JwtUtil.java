@@ -1,6 +1,5 @@
 package org.example;
 
-// File: JwtUtil.java
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,14 +9,10 @@ import java.util.Date;
 
 public class JwtUtil {
 
-    // A secret key for signing the token. Keep this secret!
-    // In a real app, this would be in a config file.
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    // Token expiration time (e.g., 1 hour)
     private static final long EXPIRATION_TIME = 1000 * 60 * 60;
 
-    // Generates a JWT for a given username
     public static String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
@@ -27,7 +22,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Validates a token and returns the claims (data)
     public static Claims validateToken(String token) {
         try {
             return Jwts.parserBuilder()

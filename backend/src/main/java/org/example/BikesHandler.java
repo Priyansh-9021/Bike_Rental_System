@@ -18,26 +18,22 @@ public class BikesHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
-            // --- 1. HANDLE CORS PRE-FLIGHT REQUEST ---
-            // This is now required because the GET request includes an Authorization header
             if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 HandlerUtils.handleOptionsRequest(exchange);
-                return; // Must return immediately
+                return;
             }
 
-            // --- 2. SET CORS HEADERS FOR THE ACTUAL REQUEST ---
             HandlerUtils.setCorsHeaders(exchange);
 
             if ("GET".equals(exchange.getRequestMethod())) {
-                // Get all bikes (you could change this to getAvailableBikes())
                 List<Bike> bikes = bikeService.getAllBikes();
                 String jsonResponse = gson.toJson(bikes);
                 HandlerUtils.sendJsonResponse(exchange, 200, jsonResponse);
             } else {
-                exchange.sendResponseHeaders(405, -1); // 405 Method Not Allowed
+                exchange.sendResponseHeaders(405, -1);
             }
         } finally {
-            exchange.close(); // Ensure the exchange is always closed
+            exchange.close();
         }
     }
 }

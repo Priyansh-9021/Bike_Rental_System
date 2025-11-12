@@ -39,12 +39,11 @@ public class LoginHandler implements HttpHandler {
                     if (success) {
                         String token = JwtUtil.generateToken(username);
 
-                        // --- MODIFIED THIS RESPONSE MAP ---
                         String jsonResponse = gson.toJson(Map.of(
                                 "success", true,
                                 "message", "Login successful!",
                                 "token", token,
-                                "username", username // <-- ADDED THIS
+                                "username", username
                         ));
                         HandlerUtils.sendJsonResponse(exchange, 200, jsonResponse);
                     } else {

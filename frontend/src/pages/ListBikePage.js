@@ -7,7 +7,6 @@ import apiClient from '../services/apiService';
 const ListBikePage = () => {
     const [model, setModel] = useState('');
     const [location, setLocation] = useState('');
-    // --- ADDED NEW STATE ---
     const [modelYear, setModelYear] = useState('');
     const [rentRate, setRentRate] = useState('');
     const [contactNumber, setContactNumber] = useState('');
@@ -19,8 +18,6 @@ const ListBikePage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // --- PASS NEW DATA ---
-            // Convert to numbers before sending
             const bikeData = {
                 model,
                 location,
@@ -56,7 +53,7 @@ const ListBikePage = () => {
                         label="Location (e.g., Alpha)"
                         value={location} onChange={(e) => setLocation(e.target.value)}
                     />
-                    {/* --- ADDED NEW FIELDS --- */}
+                    {/* --- NEW FIELDS --- */}
                     <TextField
                         margin="normal" required fullWidth
                         label="Model Year (e.g., 2023)"

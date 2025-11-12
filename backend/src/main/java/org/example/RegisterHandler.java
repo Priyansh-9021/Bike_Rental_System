@@ -19,18 +19,14 @@ public class RegisterHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
-            // --- 1. HANDLE CORS PRE-FLIGHT REQUEST ---
-            // This block is essential for the browser to allow the POST request
             if ("OPTIONS".equals(exchange.getRequestMethod())) {
                 HandlerUtils.handleOptionsRequest(exchange);
-                return; // Must return immediately
+                return;
             }
 
-            // --- 2. SET CORS HEADERS FOR THE ACTUAL REQUEST ---
             HandlerUtils.setCorsHeaders(exchange);
 
             if ("POST".equals(exchange.getRequestMethod())) {
-                // --- 3. PROCESS THE POST REQUEST ---
                 try {
                     InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
                     Map<String, String> requestBody = gson.fromJson(isr, Map.class);
@@ -44,7 +40,6 @@ public class RegisterHandler implements HttpHandler {
                         return;
                     }
 
-                    // Call the synchronized registration method
                     boolean success = bikeService.registerUser(username, password);
 
                     if (success) {
@@ -55,16 +50,15 @@ public class RegisterHandler implements HttpHandler {
                         HandlerUtils.sendJsonResponse(exchange, 409, jsonResponse); // 409 Conflict
                     }
                 } catch (Exception e) {
-                    // Handle any internal server errors
                     String jsonResponse = gson.toJson(Map.of("success", false, "message", "Error processing request: " + e.getMessage()));
                     HandlerUtils.sendJsonResponse(exchange, 500, jsonResponse);
                 }
             } else {
-                // Not a POST or OPTIONS request
-                exchange.sendResponseHeaders(405, -1); // 405 Method Not Allowed
+
+                exchange.sendResponseHeaders(405, -1);
             }
         } finally {
-            exchange.close(); // Ensure the exchange is always closed
+            exchange.close();
         }
     }
 }

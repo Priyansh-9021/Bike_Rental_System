@@ -12,7 +12,7 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
-          <CssBaseline /> {/* Normalizes styling */}
+          <CssBaseline /> {}
           <App />
         </SnackbarProvider>
       </AuthProvider>

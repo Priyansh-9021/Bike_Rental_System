@@ -4,8 +4,8 @@ import Header from './components/Header';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import ListBikePage from './pages/ListBikePage'; // <-- ADDED
-import MyBikesPage from './pages/MyBikesPage';   // <-- ADDED
+import ListBikePage from './pages/ListBikePage'; 
+import MyBikesPage from './pages/MyBikesPage';   
 
 function App() {
   return (

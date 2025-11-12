@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { 
   Card, CardContent, CardActions, Typography, Button, Box, Chip, CircularProgress, 
-  CardMedia // <-- IMPORTED CardMedia
+  CardMedia 
 } from '@mui/material';
 
 const BikeCard = ({ bike, currentUser, onBook, onReturn }) => {
   const [loading, setLoading] = useState(false);
 
-  // --- (handleBookClick, handleReturnClick functions remain the same) ---
   const handleBookClick = async () => {
     setLoading(true);
     await onBook(bike.id);
@@ -20,7 +19,6 @@ const BikeCard = ({ bike, currentUser, onBook, onReturn }) => {
     setLoading(false);
   };
 
-  // --- (renderStatus function remains the same) ---
   const renderStatus = () => {
     if (bike.isAvailable) {
       return (
@@ -58,11 +56,11 @@ const BikeCard = ({ bike, currentUser, onBook, onReturn }) => {
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       
-      {/* --- ADDED BIKE IMAGE --- */}
+      {/* --- BIKE IMAGE --- */}
       <CardMedia
         component="img"
         height="160"
-        image={bike.photoUrl || "https://i.imgur.com/g8fVwGr.png"} // Use bike's photo or a fallback
+        image={bike.photoUrl || "https://i.imgur.com/g8fVwGr.png"} 
         alt={bike.model}
       />
 
@@ -84,7 +82,7 @@ const BikeCard = ({ bike, currentUser, onBook, onReturn }) => {
             {bike.model}
           </Typography>
           <Typography variant="h6" color="primary">
-            ${bike.rentRate}/day
+            Rs.{bike.rentRate}/day
           </Typography>
         </Box>
         <Typography color="text.secondary">

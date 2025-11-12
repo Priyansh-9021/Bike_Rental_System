@@ -7,7 +7,7 @@ import {
 import { useSnackbar } from 'notistack';
 import { useAuth } from '../context/AuthContext';
 
-const serverIp = '10.168.46.36'; 
+const serverIp = '10.89.34.36'; 
 
 const DashboardPage = () => {
   const [bikes, setBikes] = useState([]);

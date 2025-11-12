@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 
 const LoginPage = () => {
-  const [tabIndex, setTabIndex] = useState(0); // 0 for Login, 1 for Register
+  const [tabIndex, setTabIndex] = useState(0);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { login, register } = useAuth();
@@ -22,15 +22,13 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       if (tabIndex === 0) {
-        // --- Login Logic ---
         await login(username, password);
         enqueueSnackbar('Login successful!', { variant: 'success' });
         navigate('/dashboard');
       } else {
-        // --- Register Logic ---
         await register(username, password);
         enqueueSnackbar('Registration successful! Please log in.', { variant: 'success' });
-        setTabIndex(0); // Switch to login tab
+        setTabIndex(0);
         setUsername('');
         setPassword('');
       }

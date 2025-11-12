@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem('authToken')
   );
-  // --- ADDED CURRENTUSER STATE ---
   const [currentUser, setCurrentUser] = useState(localStorage.getItem('username'));
   const navigate = useNavigate();
 
@@ -16,9 +15,9 @@ export const AuthProvider = ({ children }) => {
     const response = await apiClient.post('/login', { username, password });
     if (response.data.success) {
       localStorage.setItem('authToken', response.data.token);
-      localStorage.setItem('username', response.data.username); // <-- ADDED
+      localStorage.setItem('username', response.data.username); 
       setIsAuthenticated(true);
-      setCurrentUser(response.data.username); // <-- ADDED
+      setCurrentUser(response.data.username); 
       navigate('/dashboard');
     }
     return response.data;
@@ -30,14 +29,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('authToken');
-    localStorage.removeItem('username'); // <-- ADDED
+    localStorage.removeItem('username'); 
     setIsAuthenticated(false);
-    setCurrentUser(null); // <-- ADDED
+    setCurrentUser(null); 
     navigate('/login');
   };
 
   return (
-    // --- EXPOSED CURRENTUSER ---
     <AuthContext.Provider value={{ isAuthenticated, currentUser, login, register, logout }}>
       {children}
     </AuthContext.Provider>

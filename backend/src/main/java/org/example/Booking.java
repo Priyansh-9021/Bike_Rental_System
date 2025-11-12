@@ -11,7 +11,6 @@ public class Booking {
         this.bookingTime = bookingTime;
     }
 
-    // --- Getters ---
     public String getUserId() { return userId; }
     public int getBikeId() { return bikeId; }
     public long getBookingTime() { return bookingTime; }
